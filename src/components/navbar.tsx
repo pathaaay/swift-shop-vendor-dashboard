@@ -53,11 +53,11 @@ export const Navbar = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`opacity-0.9 fixed inset-0 bg-black/20 md:hidden ${!isSidebarOpen ? "hidden" : ""}`}
+        className={`z-10  opacity-0.9 fixed inset-0 bg-black/20 md:hidden ${!isSidebarOpen ? "hidden" : ""}`}
         onClick={() => setisSidebarOpen(false)}
       ></div>
       <div
-        className={`absolute top-0 bottom-0 bg-slate-100 w-50 transition-all md:-left-50 ${isSidebarOpen ? "left-0 " : "-left-50"}`}
+        className={`z-10 absolute top-0 bottom-0 bg-slate-100 w-50 transition-all md:-left-50 ${isSidebarOpen ? "left-0 " : "-left-50"}`}
       >
         <div className="text-2xl font-bold text-center py-5">SwithShop</div>
         <div className="flex flex-col gap-2 px-3">

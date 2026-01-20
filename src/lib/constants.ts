@@ -16,4 +16,8 @@ export const productCategories = [
     value: "4",
     label: "Toys",
   },
+  {
+    value: "5",
+    label: "Stationery",
+  },
 ];

@@ -4,18 +4,35 @@ import { Button } from "./button";
 import Select from "react-select";
 import { productCategories } from "../lib/constants";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
-interface AddProductFormProps {
+interface EditProductProps {
+  editProductId: number;
+  setEditProductId: React.Dispatch<React.SetStateAction<number | null>>;
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
-export const AddProductForm = ({
+
+export const EditProductForm = ({
+  editProductId,
+  setEditProductId,
   setProducts,
-}: AddProductFormProps) => {
+}: EditProductProps) => {
+  const getProductById = (id: number) => {
+    let product = null;
+    const localData = localStorage.getItem("product-details") || "";
+    if (localData) {
+      const parsedData: ProductType[] = JSON.parse(localData);
+      if (parsedData?.length > 0) {
+        product = parsedData.find((item) => item.id === id);
+      }
+    }
+    return product;
+  };
   const {
+    setValue,
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<ProductType>({
     defaultValues: {
       name: "",
@@ -25,43 +42,38 @@ export const AddProductForm = ({
     },
   });
 
+  useEffect(() => {
+    const singleProduct = getProductById(editProductId);
+    if (singleProduct) {
+      setValue("id", singleProduct.id);
+      setValue("name", singleProduct.name);
+      setValue("stock_quantity", singleProduct.stock_quantity);
+      setValue("price", singleProduct.price);
+      setValue("category", singleProduct.category);
+    }
+    return () => {};
+  }, [editProductId]);
+
   const onSubmit = (data: ProductType) => {
     try {
       const localData = localStorage.getItem("product-details") || "";
       let newDataToStore;
 
       if (localData) {
-        const parsedData = JSON.parse(localData);
+        const parsedData: ProductType[] = JSON.parse(localData);
         if (parsedData?.length > 0) {
-          const body = {
-            ...data,
-            id: parsedData[parsedData.length - 1]?.id + 1,
-          };
-          newDataToStore = [body, ...parsedData];
+          newDataToStore = parsedData.map((product) =>
+            product.id === editProductId ? { ...data } : { ...product },
+          );
         }
-        else
-          newDataToStore = [
-            {
-              ...data,
-              id: 1,
-            },
-          ];
-      } else
-        newDataToStore = [
-          {
-            ...data,
-            id: 1,
-          },
-        ];
+      }
+
+      if(!newDataToStore) throw new Error("Product not found");
 
       localStorage.setItem("product-details", JSON.stringify(newDataToStore));
       setProducts(newDataToStore);
-      toast.success("Product Added successfully!");
-      setValue("id", null);
-      setValue("name", "");
-      setValue("stock_quantity", 0);
-      setValue("price", 0);
-      setValue("category", "");
+      toast.success("Product updated successfully!");
+      setEditProductId(null);
     } catch (error) {
       toast.error(`Error adding product: ${JSON.stringify(error)}`);
     }
@@ -69,7 +81,7 @@ export const AddProductForm = ({
 
   return (
     <div className="bg-slate-100 rounded-md m-2 p-2 md:p-5">
-      <div className="text-lg font-bold text-center">Add Product Form</div>
+      <div className="text-lg font-bold text-center">Edit Product Form</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2 mb-3">
           <div>
@@ -207,7 +219,7 @@ export const AddProductForm = ({
             )}
           </div>
         </div>
-        <Button className="w-full">Add Product</Button>
+        <Button className="w-full">Update Product</Button>
       </form>
     </div>
   );
