@@ -17,7 +17,7 @@ const navItems = [
   },
   {
     name: "Contact Us",
-    href: "/",
+    href: "/contact-us",
     isButton: true,
   },
 ];
@@ -63,6 +63,7 @@ export const Navbar = () => {
         <div className="flex flex-col gap-2 px-3">
           {navItems.map((item) => (
             <div
+              key={item.href}
               className="hover:bg-gray-300 rounded-md p-1 px-2 cursor-pointer"
               onClick={() => setisSidebarOpen(false)}
             >
