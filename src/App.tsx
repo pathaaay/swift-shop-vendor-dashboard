@@ -7,7 +7,6 @@ import { ProductCard } from "./components/product-card";
 import { EditProductForm } from "./components/edit-product-form";
 import { StatsCard } from "./components/stats-card";
 import { FilterProducts } from "./components/filter-products";
-import { Button } from "./components/button";
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -24,7 +23,6 @@ function App() {
 
   useEffect(() => {
     handleFetchProducts();
-    return () => {};
   }, []);
 
   const handleFetchProducts = () => {
@@ -97,21 +95,38 @@ function App() {
           />
         </div>
         <div className="flex flex-col justify-start gap-2 p-2">
-          {products?.length > 0 && <FilterProducts />}
+          {products?.length > 0 && (
+            <FilterProducts
+              setFilteredProducts={setFilteredProducts}
+              products={products}
+            />
+          )}
           {products?.length > 0 ? (
-            products.map((product) => (
-              <Fragment key={product.id}>
-                <ProductCard
-                  product={product}
-                  setEditProductId={setEditProductId}
-                  setDeleteProductId={setDeleteProductId}
-                />
-              </Fragment>
-            ))
+            <>
+              {filteredProducts?.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Fragment key={product.id}>
+                    <ProductCard
+                      product={product}
+                      setEditProductId={setEditProductId}
+                      setDeleteProductId={setDeleteProductId}
+                    />
+                  </Fragment>
+                ))
+              ) : (
+                <div className="flex flex-col gap-3 bg-gray-200 p-4 items-center justify-center">
+                  <div className="font-bold text-lg">
+                    No Products Found
+                  </div>
+                </div>
+              )}
+            </>
           ) : (
             <div className="flex flex-col gap-3 bg-gray-200 p-4 items-center justify-center">
               <div className="font-bold text-lg">No Products in Inventory</div>
-              <span className="text-xs font-medium text-gray-600 text-center">Add Products to manage and track record of your inventory</span>
+              <span className="text-xs font-medium text-gray-600 text-center">
+                Add Products to manage and track record of your inventory
+              </span>
             </div>
           )}
         </div>

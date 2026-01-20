@@ -35,7 +35,7 @@ export const AddProductForm = ({
         if (parsedData?.length > 0) {
           const body = {
             ...data,
-            id: parsedData[parsedData.length - 1]?.id + 1,
+            id: parsedData[0]?.id + 1,
           };
           newDataToStore = [body, ...parsedData];
         }
