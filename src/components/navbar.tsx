@@ -22,6 +22,7 @@ const navItems = [
   },
 ];
 export const Navbar = () => {
+  const [isSidebarOpen, setisSidebarOpen] = useState(false);
   return (
     <>
       {/* Desktop Navbar */}
@@ -42,10 +43,34 @@ export const Navbar = () => {
             </Fragment>
           ))}
         </div>
-        <button className="md:hidden text-sm cursor-pointer border border-cyan-800  rounded-md size-10 flex items-center justify-center">
+        <button
+          onClick={() => setisSidebarOpen(true)}
+          className="md:hidden text-sm cursor-pointer border border-cyan-800  rounded-md size-10 flex items-center justify-center"
+        >
           <MenuIcon size={20} />
         </button>
       </nav>
+
+      {/* Mobile Sidebar */}
+      <div
+        className={`opacity-0.9 fixed inset-0 bg-black/20 md:hidden ${!isSidebarOpen ? "hidden" : ""}`}
+        onClick={() => setisSidebarOpen(false)}
+      ></div>
+      <div
+        className={`absolute top-0 bottom-0 bg-slate-100 w-50 transition-all md:-left-50 ${isSidebarOpen ? "left-0 " : "-left-50"}`}
+      >
+        <div className="text-2xl font-bold text-center py-5">SwithShop</div>
+        <div className="flex flex-col gap-2 px-3">
+          {navItems.map((item) => (
+            <div
+              className="hover:bg-gray-300 rounded-md p-1 px-2 cursor-pointer"
+              onClick={() => setisSidebarOpen(false)}
+            >
+              {item.name}
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 };
