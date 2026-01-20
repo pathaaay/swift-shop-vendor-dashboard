@@ -26,7 +26,7 @@ export const Navbar = () => {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="bg-slate-800 text-white py-2 px-5 md:px-20 flex items-center justify-between">
+      <nav className="bg-slate-800 text-white py-2 px-5 md:px-20 flex items-center justify-between sticky top-0 z-10">
         <div className="text-2xl font-bold">SwithShop</div>
         <div className="flex items-center gap-4 max-md:hidden">
           {navItems.map((item) => (
