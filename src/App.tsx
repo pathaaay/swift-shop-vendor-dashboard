@@ -1,9 +1,12 @@
+import { Navbar } from "./components/navbar";
+
 function App() {
   return (
     <>
-      <div className='bg-red-500'>Hello world</div>
+      <Navbar />
+      <div className="px-5 md:px-20">Hello world</div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
