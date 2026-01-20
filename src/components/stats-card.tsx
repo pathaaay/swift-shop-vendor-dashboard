@@ -1,6 +1,6 @@
 interface StatCardProps {
   label: string;
-  value: number;
+  value: number | string;
 }
 export const StatsCard = ({ label, value }: StatCardProps) => {
   return (

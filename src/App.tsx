@@ -51,7 +51,11 @@ function App() {
       totalProducts: products.length,
       lowStocks: lowStocks,
       totalInventoryValue:
-        products.reduce((acc, { price }) => acc + Number(price), 0) || 0,
+        products.reduce(
+          (acc, { price, stock_quantity }) =>
+            acc + Number(price * stock_quantity),
+          0,
+        ) || 0,
       totalOutOfStockProducts: totalOutOfStockProducts,
       totalPremiumProducts: totalPremiumProducts,
     });
@@ -83,7 +87,7 @@ function App() {
           <StatsCard label="Low Stocks" value={stats.lowStocks} />
           <StatsCard
             label="Total Inventory Value"
-            value={stats.totalInventoryValue}
+            value={"$" + stats.totalInventoryValue}
           />
           <StatsCard
             label="Total Premium Products"
@@ -115,9 +119,7 @@ function App() {
                 ))
               ) : (
                 <div className="flex flex-col gap-3 bg-gray-200 p-4 items-center justify-center">
-                  <div className="font-bold text-lg">
-                    No Products Found
-                  </div>
+                  <div className="font-bold text-lg">No Products Found</div>
                 </div>
               )}
             </>
