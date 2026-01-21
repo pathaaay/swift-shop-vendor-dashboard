@@ -29,10 +29,10 @@ export const EditProductForm = ({
     return product;
   };
   const {
-    setValue,
+    reset,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ProductType>({
     defaultValues: {
       name: "",
@@ -45,11 +45,14 @@ export const EditProductForm = ({
   useEffect(() => {
     const singleProduct = getProductById(editProductId);
     if (singleProduct) {
-      setValue("id", singleProduct.id);
-      setValue("name", singleProduct.name);
-      setValue("stock_quantity", singleProduct.stock_quantity);
-      setValue("price", singleProduct.price);
-      setValue("category", singleProduct.category);
+      //  reset will reset the values to the product data along with form states
+      reset({
+        id: singleProduct.id,
+        name: singleProduct.name,
+        stock_quantity: singleProduct.stock_quantity,
+        price: singleProduct.price,
+        category: singleProduct.category,
+      });
     }
     return () => {};
   }, [editProductId]);
@@ -68,7 +71,7 @@ export const EditProductForm = ({
         }
       }
 
-      if(!newDataToStore) throw new Error("Product not found");
+      if (!newDataToStore) throw new Error("Product not found");
 
       localStorage.setItem("product-details", JSON.stringify(newDataToStore));
       setProducts(newDataToStore);
@@ -219,7 +222,9 @@ export const EditProductForm = ({
             )}
           </div>
         </div>
-        <Button className="w-full">Update Product</Button>
+        <Button className={`w-full ${!isDirty ? "opacity-50 cursor-not-allowed!":""}`} disabled={!isDirty}>
+          Update Product
+        </Button>
       </form>
     </div>
   );

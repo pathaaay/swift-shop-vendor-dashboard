@@ -8,14 +8,12 @@ import toast from "react-hot-toast";
 interface AddProductFormProps {
   setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 }
-export const AddProductForm = ({
-  setProducts,
-}: AddProductFormProps) => {
+export const AddProductForm = ({ setProducts }: AddProductFormProps) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    setValue,
+    formState: { errors, isDirty },
+    reset,
   } = useForm<ProductType>({
     defaultValues: {
       name: "",
@@ -38,8 +36,7 @@ export const AddProductForm = ({
             id: parsedData[0]?.id + 1,
           };
           newDataToStore = [body, ...parsedData];
-        }
-        else
+        } else
           newDataToStore = [
             {
               ...data,
@@ -57,11 +54,8 @@ export const AddProductForm = ({
       localStorage.setItem("product-details", JSON.stringify(newDataToStore));
       setProducts(newDataToStore);
       toast.success("Product Added successfully!");
-      setValue("id", null);
-      setValue("name", "");
-      setValue("stock_quantity", 0);
-      setValue("price", 0);
-      setValue("category", "");
+      //  Reset will reset the form values as well as form state
+      reset();
     } catch (error) {
       toast.error(`Error adding product: ${JSON.stringify(error)}`);
     }
@@ -207,7 +201,12 @@ export const AddProductForm = ({
             )}
           </div>
         </div>
-        <Button className="w-full">Add Product</Button>
+        <Button
+          className={`w-full ${!isDirty ? "opacity-50 cursor-not-allowed!" : ""}`}
+          disabled={!isDirty}
+        >
+          Add Product
+        </Button>
       </form>
     </div>
   );
