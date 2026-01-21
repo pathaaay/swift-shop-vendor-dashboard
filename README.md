@@ -1,3 +1,14 @@
+# How the Add Product Form state handled
+-> I used usestate for products in App.tsx page.
+-> I have a different component of the Add product form.
+-> Inside the Add product form I passed the setProducts setter as prop.
+-> when we submit the add product form then I first fetched the localstorage products data if any present.
+-> If any products are there then I taken the id from the localstorage of the first and incremented it to store in the new product data.
+-> When there is no any data present in localstorage then I added id as 1 of the first element.
+-> after that I stored the data of new products array in localstorage using the [productData,...oldProductData] spread operator.
+-> So the latest product will be the first element of that array.
+-> After that I changed the state variable using the setProducts state which I passed to the add Product Form
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
