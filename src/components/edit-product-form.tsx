@@ -222,9 +222,22 @@ export const EditProductForm = ({
             )}
           </div>
         </div>
-        <Button className={`w-full ${!isDirty ? "opacity-50 cursor-not-allowed!":""}`} disabled={!isDirty}>
-          Update Product
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            type="button"
+            onClick={() => setEditProductId(null)}
+            variant="outline"
+            className={`w-full`}
+          >
+            Cancel
+          </Button>
+          <Button
+            className={`w-full ${!isDirty ? "opacity-50 cursor-not-allowed!" : ""}`}
+            disabled={!isDirty}
+          >
+            Update Product
+          </Button>
+        </div>
       </form>
     </div>
   );
